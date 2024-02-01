@@ -1,0 +1,53 @@
+package com.technosignia.Customer.service;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.technosignia.Customer.dao.CustomerRepository;
+import com.technosignia.Customer.entity.Customer;
+
+@Service
+public class CustomerService {
+	
+	@Autowired
+	CustomerRepository customerRepository;
+
+	public Customer createCustomer(Customer cust) {
+		
+		return customerRepository.save(cust);
+}
+	
+	public Optional<Customer> getCustomerById(Long id) {
+		
+		Optional<Customer> opCust= customerRepository.findById(id);
+		return opCust;
+}
+
+	public Customer updateCustomerDetails(Long id,Customer cust) {
+		
+		Optional<Customer> dbOPCust= customerRepository.findById(id);
+		Customer dbCust = dbOPCust.get();
+		
+		dbCust.setAddress(cust.getAddress());
+		dbCust.setCity(cust.getCity());
+		dbCust.setEmail(cust.getEmail());
+		dbCust.setFirst_name(cust.getFirst_name());
+		dbCust.setLast_name(cust.getLast_name());
+		dbCust.setPhone(cust.getPhone());
+		dbCust.setState(cust.getState());
+		dbCust.setId(cust.getId());
+		
+		return customerRepository.save(dbCust);
+		
+		}
+
+	public String deleteById(Long id) {
+		
+		 customerRepository.deleteById(id);
+		 
+		 return "A record deleted successfully";
+	}
+	
+}
